@@ -1,20 +1,11 @@
 import { useState } from 'react';
-import { sendMessage, isTyping } from 'react-chat-engine';
 import { SendOutlined, PictureOutlined } from '@ant-design/icons';
+import { sendMessage, isTyping } from 'react-chat-engine';
 
 const MessageForm = (props) => {
 
     const [value, setValue] = useState('');
     const { chatId, creds } = props;
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-
-        const text = value.trim();
-
-        if(text.length > 0) sendMessage(creds, chatId, { text:''});
-        setValue('');
-    }
 
     const handleChange = (e) => {
         setValue(e.target.value);
@@ -22,9 +13,22 @@ const MessageForm = (props) => {
         isTyping( props, chatId );
     }
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        const text = value.trim();
+
+        if(text.length > 0) {
+            sendMessage(creds, chatId, { text });
+        }
+
+        setValue('');
+
+    };
+
     const handleUpload = (e) => {
-        sendMessage( creds, chatId, { files: e.target.files, text: '' })
-    }
+        sendMessage( creds, chatId, { files: e.target.files, text: '' });
+    };
 
     return(
         <form className="message-form" onSubmit={handleSubmit} >
